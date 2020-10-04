@@ -6,7 +6,7 @@ import com.example.movietheater.data.ui.model.UiMovieModel
 fun RemoteMovieModel.mapToUi() =
     UiMovieModel(
         this.adult,
-        this.genres,
+        this.genres.map { it.name },
         this.id,
         this.originalLanguage,
         this.originalTitle,
