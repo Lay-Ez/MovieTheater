@@ -11,8 +11,6 @@ import java.io.IOException
 
 class MoviesListViewModel(private val moviesRepo: MoviesRepo) : BaseViewModel<MoviesViewState>() {
 
-    private val TAG = "MovieLoad"
-
     override fun initialViewState(): MoviesViewState = MoviesViewState(
         status = Status.PROCESSING,
         movieList = listOf()
