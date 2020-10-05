@@ -1,5 +1,7 @@
 package com.example.movietheater.data.ui.model
 
+import com.example.movietheater.base.ListItem
+
 data class UiMovieModel(
     val adult: Boolean,
     val genres: List<String>,
@@ -14,4 +16,4 @@ data class UiMovieModel(
     val videoPath: String,
     val voteAvg: Double,
     val voteCount: Int
-)
+) : ListItem
