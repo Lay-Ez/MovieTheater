@@ -1,4 +1,4 @@
-package com.example.movietheater.base
+package com.example.movietheater.base.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

@@ -7,7 +7,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.movietheater.R
 import com.example.movietheater.base.ListItem
-import com.example.movietheater.base.Status
+import com.example.movietheater.base.viewmodel.Status
 import com.example.movietheater.movieslistscreen.ui.viewmodel.MoviesListViewModel
 import com.example.movietheater.movieslistscreen.ui.viewmodel.MoviesViewState
 import com.example.movietheater.movieslistscreen.ui.viewmodel.UiEvent

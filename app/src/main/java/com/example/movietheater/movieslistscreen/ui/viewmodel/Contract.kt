@@ -1,7 +1,7 @@
 package com.example.movietheater.movieslistscreen.ui.viewmodel
 
-import com.example.movietheater.base.Event
-import com.example.movietheater.base.Status
+import com.example.movietheater.base.viewmodel.Event
+import com.example.movietheater.base.viewmodel.Status
 import com.example.movietheater.data.ui.model.UiMovieModel
 
 data class MoviesViewState(

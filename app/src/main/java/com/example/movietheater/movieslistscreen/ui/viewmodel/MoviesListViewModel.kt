@@ -1,9 +1,9 @@
 package com.example.movietheater.movieslistscreen.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import com.example.movietheater.base.BaseViewModel
-import com.example.movietheater.base.Event
-import com.example.movietheater.base.Status
+import com.example.movietheater.base.viewmodel.BaseViewModel
+import com.example.movietheater.base.viewmodel.Event
+import com.example.movietheater.base.viewmodel.Status
 import com.example.movietheater.data.MoviesRepo
 import com.example.movietheater.data.ui.model.UiMovieModel
 import kotlinx.coroutines.launch
