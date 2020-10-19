@@ -1,6 +1,7 @@
 package com.example.movietheater.data.ui.model
 
 import com.example.movietheater.base.ListItem
+import java.util.*
 
 data class UiMovieModel(
     val adult: Boolean,
@@ -9,7 +10,7 @@ data class UiMovieModel(
     val originalLanguage: String,
     val originalTitle: String,
     val overview: String,
-    val releaseDate: String,
+    val releaseDate: Date,
     val posterImagePath: String,
     val popularity: Double,
     val title: String,
