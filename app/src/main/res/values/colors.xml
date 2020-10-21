@@ -5,6 +5,8 @@
     <color name="colorPrimaryDark">#c25e00</color>
     <color name="colorAccent">#0071fb</color>
 
+    <color name="colorOnPrimary">#000000</color>
+
     <color name="color_rating_circle_outline">#FFFFFF</color>
     <color name="color_rating_circle_fill">#B3000000</color>
 </resources>

@@ -18,6 +18,9 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         displayMovie(args.movieModel)
+        toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressed()
+        }
     }
 
     private fun displayMovie(movie: UiMovieModel) {

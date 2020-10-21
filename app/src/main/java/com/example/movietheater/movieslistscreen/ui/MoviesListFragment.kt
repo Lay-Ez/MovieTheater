@@ -33,7 +33,9 @@ class MoviesListFragment : Fragment(R.layout.fragment_movies_list) {
         viewModel.viewState.observe(viewLifecycleOwner, Observer {
             displayState(it)
         })
-        viewModel.processUiEvent(UiEvent.LoadMovies)
+        if (!isContentAvailable()) {
+            viewModel.processUiEvent(UiEvent.LoadMovies)
+        }
         swipeRefreshLayout.setOnRefreshListener {
             viewModel.processUiEvent(UiEvent.LoadMovies)
         }
@@ -70,6 +72,11 @@ class MoviesListFragment : Fragment(R.layout.fragment_movies_list) {
     private fun setupAdapter() {
         moviesRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         moviesRecyclerView.adapter = adapter
+    }
+
+    private fun isContentAvailable(): Boolean {
+        val status = viewModel.viewState.value?.status
+        return status != null && status == Status.CONTENT
     }
 
     private fun openDetailedViewForMovie(movie: UiMovieModel) {
