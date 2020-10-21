@@ -13,7 +13,8 @@ class MoviesListViewModel(private val moviesRepo: MoviesRepo) : BaseViewModel<Mo
 
     override fun initialViewState(): MoviesViewState = MoviesViewState(
         status = Status.PROCESSING,
-        movieList = listOf()
+        movieList = listOf(),
+        error = null
     )
 
     override fun reduce(event: Event, previousState: MoviesViewState): MoviesViewState? {
@@ -34,14 +35,14 @@ class MoviesListViewModel(private val moviesRepo: MoviesRepo) : BaseViewModel<Mo
                 processDataEvent(DataEvent.OnError(e))
             }
         }
-        return MoviesViewState(status = Status.PROCESSING, movieList = listOf())
+        return MoviesViewState(status = Status.PROCESSING, movieList = listOf(), error = null)
     }
 
     private fun onMoviesLoaded(moviesList: List<UiMovieModel>): MoviesViewState {
-        return MoviesViewState(Status.CONTENT, moviesList)
+        return MoviesViewState(Status.CONTENT, moviesList, error = null)
     }
 
     private fun onError(e: Throwable): MoviesViewState {
-        return MoviesViewState(status = Status.ERROR, movieList = listOf())
+        return MoviesViewState(status = Status.ERROR, movieList = listOf(), error = e)
     }
 }

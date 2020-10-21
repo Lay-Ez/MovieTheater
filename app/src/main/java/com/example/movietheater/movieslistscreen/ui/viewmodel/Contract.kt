@@ -6,7 +6,8 @@ import com.example.movietheater.data.ui.model.UiMovieModel
 
 data class MoviesViewState(
     val status: Status,
-    val movieList: List<UiMovieModel>
+    val movieList: List<UiMovieModel>,
+    val error: Throwable?
 )
 
 sealed class DataEvent : Event {
