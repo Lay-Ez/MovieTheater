@@ -9,5 +9,18 @@
         android:id="@+id/moviesListFragment"
         android:name="com.example.movietheater.movieslistscreen.ui.MoviesListFragment"
         android:label="fragment_movies_list"
-        tools:layout="@layout/fragment_movies_list" />
+        tools:layout="@layout/fragment_movies_list">
+        <action
+            android:id="@+id/to_movieDetailViewFragment"
+            app:destination="@id/movieDetailViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieDetailViewFragment"
+        android:name="com.example.movietheater.moviedetailview.ui.MovieDetailViewFragment"
+        android:label="fragment_movie_detail_view"
+        tools:layout="@layout/fragment_movie_detail_view">
+        <argument
+            android:name="movieModel"
+            app:argType="com.example.movietheater.data.ui.model.UiMovieModel" />
+    </fragment>
 </navigation>

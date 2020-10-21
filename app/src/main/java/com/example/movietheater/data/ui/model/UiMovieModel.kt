@@ -1,8 +1,11 @@
 package com.example.movietheater.data.ui.model
 
+import android.os.Parcelable
 import com.example.movietheater.base.ListItem
+import kotlinx.android.parcel.Parcelize
 import java.util.*
 
+@Parcelize
 data class UiMovieModel(
     val adult: Boolean,
     val genres: List<String>,
@@ -17,4 +20,4 @@ data class UiMovieModel(
     val videoPath: String,
     val voteAvg: Double,
     val voteCount: Int
-) : ListItem
+) : ListItem, Parcelable
