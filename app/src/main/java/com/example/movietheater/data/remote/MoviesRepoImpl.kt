@@ -7,4 +7,7 @@ class MoviesRepoImpl(private val moviesApi: MoviesApi) :
 
     override suspend fun getMovies(): List<RemoteMovieModel> =
         moviesApi.getMovies().movies
+
+    override suspend fun getMovie(movieId: Int): RemoteMovieModel? =
+        moviesApi.getMovies().movies.find { it.id == movieId }
 }
