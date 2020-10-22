@@ -80,7 +80,7 @@ class MoviesListFragment : Fragment(R.layout.fragment_movies_list) {
     }
 
     private fun openDetailedViewForMovie(movie: UiMovieModel) {
-        val action = MoviesListFragmentDirections.toMovieDetailViewFragment(movie)
+        val action = MoviesListFragmentDirections.toMovieDetailViewFragment(movie.id)
         findNavController().navigate(action)
     }
 }

@@ -22,7 +22,7 @@
         android:label="fragment_movie_detail_view"
         tools:layout="@layout/fragment_movie_detail_view">
         <argument
-            android:name="movieModel"
-            app:argType="com.example.movietheater.ui.data.model.UiMovieModel" />
+            android:name="movieId"
+            app:argType="integer" />
     </fragment>
 </navigation>
