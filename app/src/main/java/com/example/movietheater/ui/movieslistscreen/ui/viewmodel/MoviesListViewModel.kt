@@ -1,11 +1,12 @@
-package com.example.movietheater.movieslistscreen.ui.viewmodel
+package com.example.movietheater.ui.movieslistscreen.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.example.movietheater.base.viewmodel.BaseViewModel
 import com.example.movietheater.base.viewmodel.Event
 import com.example.movietheater.base.viewmodel.Status
-import com.example.movietheater.data.MoviesRepo
-import com.example.movietheater.data.ui.model.UiMovieModel
+import com.example.movietheater.data.remote.MoviesRepo
+import com.example.movietheater.ui.data.model.UiMovieModel
+import com.example.movietheater.ui.data.model.mapToUi
 import kotlinx.coroutines.launch
 import java.io.IOException
 
@@ -30,7 +31,9 @@ class MoviesListViewModel(private val moviesRepo: MoviesRepo) : BaseViewModel<Mo
         viewModelScope.launch {
             try {
                 val moviesList = moviesRepo.getMovies()
-                processDataEvent(DataEvent.OnMoviesLoaded(moviesList))
+                processDataEvent(DataEvent.OnMoviesLoaded(
+                    moviesList.map { it.mapToUi() }
+                ))
             } catch (e: IOException) {
                 processDataEvent(DataEvent.OnError(e))
             }

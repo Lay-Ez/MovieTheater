@@ -1,4 +1,4 @@
-package com.example.movietheater.moviedetailview.ui
+package com.example.movietheater.ui.moviedetailview.ui
 
 import android.os.Bundle
 import android.view.View
@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 import com.example.movietheater.R
 import com.example.movietheater.base.extensions.getYear
 import com.example.movietheater.base.extensions.round
-import com.example.movietheater.data.ui.model.UiMovieModel
+import com.example.movietheater.ui.data.model.UiMovieModel
 import kotlinx.android.synthetic.main.fragment_movie_detail_view.*
 
 class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {

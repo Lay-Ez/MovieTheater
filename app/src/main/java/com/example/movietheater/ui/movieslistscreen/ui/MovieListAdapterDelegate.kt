@@ -1,4 +1,4 @@
-package com.example.movietheater.movieslistscreen.ui
+package com.example.movietheater.ui.movieslistscreen.ui
 
 import android.widget.TextView
 import com.bumptech.glide.Glide
@@ -6,7 +6,7 @@ import com.example.movietheater.R
 import com.example.movietheater.base.ListItem
 import com.example.movietheater.base.extensions.getYear
 import com.example.movietheater.base.extensions.round
-import com.example.movietheater.data.ui.model.UiMovieModel
+import com.example.movietheater.ui.data.model.UiMovieModel
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateLayoutContainer
 import kotlinx.android.synthetic.main.movie_list_item.view.*

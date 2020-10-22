@@ -1,8 +1,8 @@
 package com.example.movietheater.data.di
 
-import com.example.movietheater.data.MoviesRepo
-import com.example.movietheater.data.MoviesRepoImpl
 import com.example.movietheater.data.remote.MoviesApi
+import com.example.movietheater.data.remote.MoviesRepo
+import com.example.movietheater.data.remote.MoviesRepoImpl
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

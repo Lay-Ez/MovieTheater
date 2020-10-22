@@ -1,6 +1,6 @@
-package com.example.movietheater.movieslistscreen.di
+package com.example.movietheater.ui.movieslistscreen.di
 
-import com.example.movietheater.movieslistscreen.ui.viewmodel.MoviesListViewModel
+import com.example.movietheater.ui.movieslistscreen.ui.viewmodel.MoviesListViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

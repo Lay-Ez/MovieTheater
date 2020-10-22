@@ -1,4 +1,4 @@
-package com.example.movietheater.data.ui.model
+package com.example.movietheater.ui.data.model
 
 import android.os.Parcelable
 import com.example.movietheater.base.ListItem

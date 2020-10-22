@@ -2,7 +2,7 @@ package com.example.movietheater
 
 import android.app.Application
 import com.example.movietheater.data.di.dataModule
-import com.example.movietheater.movieslistscreen.di.movieListModule
+import com.example.movietheater.ui.movieslistscreen.di.movieListModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 

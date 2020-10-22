@@ -5,7 +5,7 @@
     android:id="@+id/constrainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".moviedetailview.ui.MovieDetailViewFragment">
+    tools:context=".ui.moviedetailview.ui.MovieDetailViewFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
