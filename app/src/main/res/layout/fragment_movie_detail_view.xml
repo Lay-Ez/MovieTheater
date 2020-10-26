@@ -44,6 +44,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="@+id/titleTextView"
+                app:layout_constraintStart_toStartOf="@+id/posterImageView"
+                app:layout_constraintTop_toBottomOf="@+id/desciptionTextView" />
+
             <ImageView
                 android:id="@+id/posterImageView"
                 android:layout_width="150dp"
@@ -126,6 +136,17 @@
                 app:layout_constraintStart_toStartOf="@+id/posterImageView"
                 app:layout_constraintTop_toBottomOf="@+id/divider"
                 tools:text="Under the direction of a ruthless instructor, a talented young drummer begins to pursue perfection at any cost, even his humanity." />
+
+            <com.google.android.exoplayer2.ui.PlayerView
+                android:id="@+id/playerView"
+                android:layout_width="0dp"
+                android:layout_height="250dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/desciptionTextView"
+                app:layout_constraintStart_toStartOf="@+id/desciptionTextView"
+                app:layout_constraintTop_toBottomOf="@+id/divider2" />
 
             <androidx.constraintlayout.widget.Barrier
                 android:id="@+id/barrier"

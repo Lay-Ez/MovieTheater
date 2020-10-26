@@ -19,7 +19,8 @@ class MovieDetailViewModel(private val moviesRepo: MoviesRepo) :
             movie = null,
             error = null,
             playerViewState = PlayerViewState(
-                isPlaying = false,
+                videoUri = "",
+                playWhenReady = false,
                 playTimeInMs = 0
             )
         )
@@ -27,6 +28,11 @@ class MovieDetailViewModel(private val moviesRepo: MoviesRepo) :
     override fun reduce(event: Event, previousState: MovieDetailViewState): MovieDetailViewState? {
         when (event) {
             is UiEvent.LoadMovie -> return loadMovie(event.movieId, previousState)
+            is UiEvent.SavePlayerState -> return onPlayerStateSave(
+                event.playTimeInMs,
+                event.playWhenReady,
+                previousState
+            )
             is DataEvent.OnMovieLoaded -> return onMovieLoaded(event.movie, previousState)
             is DataEvent.OnError -> return onError(event.error, previousState)
         }
@@ -60,7 +66,9 @@ class MovieDetailViewModel(private val moviesRepo: MoviesRepo) :
             status = Status.CONTENT,
             movie = movie,
             error = null,
-            playerViewState = previousState.playerViewState
+            playerViewState = previousState.playerViewState.copy(
+                videoUri = movie.videoPath
+            )
         )
     }
 
@@ -73,6 +81,19 @@ class MovieDetailViewModel(private val moviesRepo: MoviesRepo) :
             movie = null,
             error = error,
             playerViewState = previousState.playerViewState
+        )
+    }
+
+    private fun onPlayerStateSave(
+        playTimeInMs: Long,
+        playWhenReady: Boolean,
+        previousState: MovieDetailViewState
+    ): MovieDetailViewState {
+        return previousState.copy(
+            playerViewState = previousState.playerViewState.copy(
+                playTimeInMs = playTimeInMs,
+                playWhenReady = playWhenReady
+            )
         )
     }
 }

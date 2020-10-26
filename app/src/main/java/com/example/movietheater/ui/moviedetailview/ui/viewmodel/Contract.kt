@@ -12,7 +12,8 @@ data class MovieDetailViewState(
 )
 
 data class PlayerViewState(
-    val isPlaying: Boolean,
+    val videoUri: String,
+    val playWhenReady: Boolean,
     val playTimeInMs: Long
 )
 
@@ -23,4 +24,5 @@ sealed class DataEvent : Event {
 
 sealed class UiEvent : Event {
     data class LoadMovie(val movieId: Int) : UiEvent()
+    data class SavePlayerState(val playTimeInMs: Long, val playWhenReady: Boolean) : UiEvent()
 }
