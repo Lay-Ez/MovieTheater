@@ -52,7 +52,7 @@
                 android:background="?android:attr/listDivider"
                 app:layout_constraintEnd_toEndOf="@+id/titleTextView"
                 app:layout_constraintStart_toStartOf="@+id/posterImageView"
-                app:layout_constraintTop_toBottomOf="@+id/desciptionTextView" />
+                app:layout_constraintTop_toBottomOf="@+id/descriptionTextView" />
 
             <ImageView
                 android:id="@+id/posterImageView"
@@ -127,7 +127,7 @@
                 app:layout_constraintTop_toBottomOf="@id/barrier" />
 
             <TextView
-                android:id="@+id/desciptionTextView"
+                android:id="@+id/descriptionTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -140,12 +140,14 @@
             <com.google.android.exoplayer2.ui.PlayerView
                 android:id="@+id/playerView"
                 android:layout_width="0dp"
-                android:layout_height="250dp"
+                android:layout_height="216dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="24dp"
+                android:background="#000000"
+                app:controller_layout_id="@layout/exo_player_control_view"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/desciptionTextView"
-                app:layout_constraintStart_toStartOf="@+id/desciptionTextView"
+                app:layout_constraintEnd_toEndOf="@+id/descriptionTextView"
+                app:layout_constraintStart_toStartOf="@+id/descriptionTextView"
                 app:layout_constraintTop_toBottomOf="@+id/divider2" />
 
             <androidx.constraintlayout.widget.Barrier

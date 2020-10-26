@@ -66,7 +66,7 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
         genreTextView.text = formatGenres(movie.genres)
         scoreTextView.text = movie.voteAvg.round(1).toString()
         voteCountTextView.text = movie.voteCount.toString()
-        desciptionTextView.text = movie.overview
+        descriptionTextView.text = movie.overview
     }
 
     private fun displayPlayer(playerViewState: PlayerViewState) {
