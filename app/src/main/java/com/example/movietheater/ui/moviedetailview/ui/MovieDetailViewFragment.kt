@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.movietheater.R
@@ -17,14 +18,15 @@ import com.example.movietheater.ui.moviedetailview.ui.viewmodel.UiEvent
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.exo_player_control_view.view.*
 import kotlinx.android.synthetic.main.fragment_movie_detail_view.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.io.IOException
 
 class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
 
     private val args: MovieDetailViewFragmentArgs by navArgs()
-    private val viewModel: MovieDetailViewModel by viewModel()
+    private val viewModel: MovieDetailViewModel by sharedViewModel()
     private lateinit var player: SimpleExoPlayer
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,6 +54,9 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
             }
         })
         viewModel.processUiEvent(UiEvent.LoadMovie(args.movieId))
+        playerView.exo_fullscreen_icon.setOnClickListener {
+            enterFullScreenMode()
+        }
     }
 
     override fun onDestroy() {
@@ -120,5 +125,10 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
         val playWhenReady = player.playWhenReady
         viewModel.processUiEvent(UiEvent.SavePlayerState(playbackPosition, playWhenReady))
         player.release()
+    }
+
+    private fun enterFullScreenMode() {
+        val action = MovieDetailViewFragmentDirections.toFullScreenPlayerFragment()
+        findNavController().navigate(action)
     }
 }

@@ -24,5 +24,13 @@
         <argument
             android:name="movieId"
             app:argType="integer" />
+        <action
+            android:id="@+id/to_fullScreenPlayerFragment"
+            app:destination="@id/fullScreenPlayerFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/fullScreenPlayerFragment"
+        android:name="com.example.movietheater.ui.moviedetailview.ui.FullScreenPlayerFragment"
+        android:label="fragment_full_screen_player"
+        tools:layout="@layout/fragment_full_screen_player" />
 </navigation>
