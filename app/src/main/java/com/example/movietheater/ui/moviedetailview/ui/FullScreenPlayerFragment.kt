@@ -51,9 +51,7 @@ class FullScreenPlayerFragment : Fragment(R.layout.fragment_full_screen_player) 
 
     private fun exitFullscreen() {
         requireActivity().run {
-            window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
+            window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE)
             actionBar?.show()
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_USER
         }
@@ -62,13 +60,13 @@ class FullScreenPlayerFragment : Fragment(R.layout.fragment_full_screen_player) 
     private fun initializePlayer() {
         player = SimpleExoPlayer.Builder(requireContext()).build()
         playerView.player = player
-        playerView.setOnTouchListener { view, _ ->
-            enterFullScreen()
-            view.performClick()
-            return@setOnTouchListener false
-        }
         playerView.exo_fullscreen_icon.setOnClickListener {
             requireActivity().onBackPressed()
+        }
+        playerView.setControllerVisibilityListener {
+            if (it == View.GONE) {
+                enterFullScreen()
+            }
         }
     }
 
