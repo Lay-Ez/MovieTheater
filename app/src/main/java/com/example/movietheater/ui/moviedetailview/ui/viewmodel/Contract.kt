@@ -7,14 +7,7 @@ import com.example.movietheater.ui.data.model.UiMovieModel
 data class MovieDetailViewState(
     val status: Status,
     val movie: UiMovieModel?,
-    val error: Throwable?,
-    val playerViewState: PlayerViewState
-)
-
-data class PlayerViewState(
-    val videoUri: String,
-    val playWhenReady: Boolean,
-    val playTimeInMs: Long
+    val error: Throwable?
 )
 
 sealed class DataEvent : Event {
@@ -24,5 +17,4 @@ sealed class DataEvent : Event {
 
 sealed class UiEvent : Event {
     data class LoadMovie(val movieId: Int) : UiEvent()
-    data class SavePlayerState(val playTimeInMs: Long, val playWhenReady: Boolean) : UiEvent()
 }

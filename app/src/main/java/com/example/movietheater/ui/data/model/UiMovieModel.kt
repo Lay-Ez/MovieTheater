@@ -17,7 +17,7 @@ data class UiMovieModel(
     val posterImagePath: String,
     val popularity: Double,
     val title: String,
-    val videoPath: String,
+    val videoUri: String,
     val voteAvg: Double,
     val voteCount: Int
 ) : ListItem, Parcelable

@@ -2,6 +2,7 @@ package com.example.movietheater.ui.moviedetailview.ui
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -12,22 +13,36 @@ import com.example.movietheater.base.extensions.getYear
 import com.example.movietheater.base.extensions.round
 import com.example.movietheater.base.viewmodel.Status
 import com.example.movietheater.ui.data.model.UiMovieModel
+import com.example.movietheater.ui.moviedetailview.di.ExoPlayerProvider
 import com.example.movietheater.ui.moviedetailview.ui.viewmodel.MovieDetailViewModel
-import com.example.movietheater.ui.moviedetailview.ui.viewmodel.PlayerViewState
 import com.example.movietheater.ui.moviedetailview.ui.viewmodel.UiEvent
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.exo_player_control_view.view.*
 import kotlinx.android.synthetic.main.fragment_movie_detail_view.*
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.android.ext.android.get
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.IOException
 
 class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
 
     private val args: MovieDetailViewFragmentArgs by navArgs()
-    private val viewModel: MovieDetailViewModel by sharedViewModel()
-    private lateinit var player: SimpleExoPlayer
+    private val viewModel: MovieDetailViewModel by viewModel()
+    private val playerProvider: ExoPlayerProvider = get()
+    private val player: SimpleExoPlayer = playerProvider.getPlayer()
+
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            playerProvider.releasePlayer()
+            findNavController().navigateUp()
+        }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, onBackPressedCallback)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -40,9 +55,8 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
                 Status.CONTENT -> {
                     displayLoad(false)
                     val movie = viewState.movie!!
-                    val playerViewState = viewState.playerViewState
                     displayMovie(movie)
-                    displayPlayer(playerViewState)
+                    displayPlayer(movie.videoUri)
                 }
                 Status.ERROR -> {
                     displayLoad(false)
@@ -53,15 +67,12 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
                 }
             }
         })
-        viewModel.processUiEvent(UiEvent.LoadMovie(args.movieId))
+        if (!isContentAvailable()) {
+            viewModel.processUiEvent(UiEvent.LoadMovie(args.movieId))
+        }
         playerView.exo_fullscreen_icon.setOnClickListener {
             enterFullScreenMode()
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        releasePlayer()
     }
 
     private fun displayMovie(movie: UiMovieModel) {
@@ -74,11 +85,11 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
         descriptionTextView.text = movie.overview
     }
 
-    private fun displayPlayer(playerViewState: PlayerViewState) {
-        player.setMediaItem(MediaItem.fromUri(playerViewState.videoUri))
-        player.playWhenReady = playerViewState.playWhenReady
-        player.seekTo(playerViewState.playTimeInMs)
-        player.prepare()
+    private fun displayPlayer(videoUri: String) {
+        if (player.currentMediaItem?.playbackProperties?.uri.toString() != videoUri) {
+            player.setMediaItem(MediaItem.fromUri(videoUri))
+            player.prepare()
+        }
     }
 
     private fun displayError(error: Throwable) {
@@ -116,19 +127,15 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
     }
 
     private fun initializePlayer() {
-        player = SimpleExoPlayer.Builder(requireContext()).build()
         playerView.player = player
-    }
-
-    private fun releasePlayer() {
-        val playbackPosition = player.currentPosition
-        val playWhenReady = player.playWhenReady
-        viewModel.processUiEvent(UiEvent.SavePlayerState(playbackPosition, playWhenReady))
-        player.release()
     }
 
     private fun enterFullScreenMode() {
         val action = MovieDetailViewFragmentDirections.toFullScreenPlayerFragment()
         findNavController().navigate(action)
+    }
+
+    private fun isContentAvailable(): Boolean {
+        return viewModel.viewState.value?.movie?.id == args.movieId
     }
 }

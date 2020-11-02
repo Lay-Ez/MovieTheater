@@ -17,29 +17,19 @@ class MovieDetailViewModel(private val moviesRepo: MoviesRepo) :
         MovieDetailViewState(
             status = Status.PROCESSING,
             movie = null,
-            error = null,
-            playerViewState = PlayerViewState(
-                videoUri = "",
-                playWhenReady = false,
-                playTimeInMs = 0
-            )
+            error = null
         )
 
     override fun reduce(event: Event, previousState: MovieDetailViewState): MovieDetailViewState? {
         when (event) {
-            is UiEvent.LoadMovie -> return loadMovie(event.movieId, previousState)
-            is UiEvent.SavePlayerState -> return onPlayerStateSave(
-                event.playTimeInMs,
-                event.playWhenReady,
-                previousState
-            )
-            is DataEvent.OnMovieLoaded -> return onMovieLoaded(event.movie, previousState)
-            is DataEvent.OnError -> return onError(event.error, previousState)
+            is UiEvent.LoadMovie -> return loadMovie(event.movieId)
+            is DataEvent.OnMovieLoaded -> return onMovieLoaded(event.movie)
+            is DataEvent.OnError -> return onError(event.error)
         }
         return null
     }
 
-    private fun loadMovie(movieId: Int, previousState: MovieDetailViewState): MovieDetailViewState {
+    private fun loadMovie(movieId: Int): MovieDetailViewState {
         viewModelScope.launch {
             try {
                 val movie = moviesRepo.getMovie(movieId)?.mapToUi()
@@ -53,47 +43,27 @@ class MovieDetailViewModel(private val moviesRepo: MoviesRepo) :
         return MovieDetailViewState(
             status = Status.PROCESSING,
             movie = null,
-            error = null,
-            playerViewState = previousState.playerViewState
+            error = null
         )
     }
 
     private fun onMovieLoaded(
-        movie: UiMovieModel,
-        previousState: MovieDetailViewState
+        movie: UiMovieModel
     ): MovieDetailViewState {
         return MovieDetailViewState(
             status = Status.CONTENT,
             movie = movie,
-            error = null,
-            playerViewState = previousState.playerViewState.copy(
-                videoUri = movie.videoPath
-            )
+            error = null
         )
     }
 
     private fun onError(
-        error: Throwable,
-        previousState: MovieDetailViewState
+        error: Throwable
     ): MovieDetailViewState {
         return MovieDetailViewState(
             status = Status.ERROR,
             movie = null,
-            error = error,
-            playerViewState = previousState.playerViewState
-        )
-    }
-
-    private fun onPlayerStateSave(
-        playTimeInMs: Long,
-        playWhenReady: Boolean,
-        previousState: MovieDetailViewState
-    ): MovieDetailViewState {
-        return previousState.copy(
-            playerViewState = previousState.playerViewState.copy(
-                playTimeInMs = playTimeInMs,
-                playWhenReady = playWhenReady
-            )
+            error = error
         )
     }
 }
