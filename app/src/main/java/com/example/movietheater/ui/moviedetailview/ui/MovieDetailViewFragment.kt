@@ -1,5 +1,6 @@
 package com.example.movietheater.ui.moviedetailview.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
@@ -27,6 +28,8 @@ import java.io.IOException
 
 class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
 
+    private val TAG = "MovieDetailViewFragment"
+
     private val args: MovieDetailViewFragmentArgs by navArgs()
     private val viewModel: MovieDetailViewModel by viewModel()
     private val playerProvider: ExoPlayerProvider = get()
@@ -44,8 +47,8 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, onBackPressedCallback)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onStart() {
+        super.onStart()
         toolbar.setNavigationOnClickListener {
             requireActivity().onBackPressed()
         }
@@ -131,8 +134,9 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
     }
 
     private fun enterFullScreenMode() {
-        val action = MovieDetailViewFragmentDirections.toFullScreenPlayerFragment()
-        findNavController().navigate(action)
+        with(Intent(requireActivity(), FullScreenPlayerActivity::class.java)) {
+            startActivity(this)
+        }
     }
 
     private fun isContentAvailable(): Boolean {
