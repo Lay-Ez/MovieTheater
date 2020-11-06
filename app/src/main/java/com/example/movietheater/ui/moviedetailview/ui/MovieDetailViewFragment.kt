@@ -28,8 +28,6 @@ import java.io.IOException
 
 class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
 
-    private val TAG = "MovieDetailViewFragment"
-
     private val args: MovieDetailViewFragmentArgs by navArgs()
     private val viewModel: MovieDetailViewModel by viewModel()
     private val playerProvider: ExoPlayerProvider = get()
@@ -47,12 +45,19 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, onBackPressedCallback)
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         toolbar.setNavigationOnClickListener {
             requireActivity().onBackPressed()
         }
-        initializePlayer()
+        playerView.exo_fullscreen_icon.setOnClickListener {
+            enterFullScreenMode()
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        playerView.player = player
         viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
             when (viewState.status) {
                 Status.CONTENT -> {
@@ -73,9 +78,11 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
         if (!isContentAvailable()) {
             viewModel.processUiEvent(UiEvent.LoadMovie(args.movieId))
         }
-        playerView.exo_fullscreen_icon.setOnClickListener {
-            enterFullScreenMode()
-        }
+    }
+
+    override fun onStop() {
+        playerView.player = null
+        super.onStop()
     }
 
     private fun displayMovie(movie: UiMovieModel) {
@@ -127,10 +134,6 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
             }
         }
         return sb.toString()
-    }
-
-    private fun initializePlayer() {
-        playerView.player = player
     }
 
     private fun enterFullScreenMode() {
