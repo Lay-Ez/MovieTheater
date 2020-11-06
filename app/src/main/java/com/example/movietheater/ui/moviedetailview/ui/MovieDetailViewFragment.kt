@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.movietheater.R
-import com.example.movietheater.base.extensions.getYear
+import com.example.movietheater.base.extensions.retrieveYear
 import com.example.movietheater.base.extensions.round
 import com.example.movietheater.ui.data.model.UiMovieModel
 import kotlinx.android.synthetic.main.fragment_movie_detail_view.*
@@ -26,7 +26,7 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
     private fun displayMovie(movie: UiMovieModel) {
         Glide.with(constrainLayout).load(movie.posterImagePath).into(posterImageView)
         titleTextView.text = movie.title
-        yearTextView.text = getYear(movie.releaseDate)
+        yearTextView.text = movie.releaseDate.retrieveYear().toString()
         genreTextView.text = formatGenres(movie.genres)
         scoreTextView.text = movie.voteAvg.round(1).toString()
         voteCountTextView.text = movie.voteCount.toString()
