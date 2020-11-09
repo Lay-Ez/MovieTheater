@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">MovieTheater</string>
+
+    <string name="movie_list_toolbar_title">Movies</string>
+    <string name="network_error_msg">Cannot connect to server…</string>
+    <string name="generic_error_msg">Oops, something went wrong…</string>
+
+    <string name="movie_detail_toolbar_title">Details</string>
+    <string name="time_divider">/</string>
 </resources>
