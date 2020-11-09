@@ -5,12 +5,10 @@ import androidx.lifecycle.Observer
 import com.example.movietheater.base.viewmodel.Status
 import com.example.movietheater.data.remote.MoviesRepo
 import com.example.movietheater.ui.CoroutineRule
-import com.example.movietheater.ui.capture
+import com.example.movietheater.ui.captureViewState
 import com.example.movietheater.ui.data.model.mapToUi
 import com.example.movietheater.ui.remoteMovieModel
-import com.nhaarman.mockitokotlin2.atLeastOnce
 import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -51,7 +49,7 @@ class MoviesListViewModelTest {
             whenever(moviesRepo.getMovies()).thenReturn(movieList)
         }
         viewModel.processUiEvent(UiEvent.LoadMovies)
-        val viewState = captureViewState()
+        val viewState = captureViewState(viewStateObserver)
         assertEquals(Status.CONTENT, viewState.status)
         assertEquals(remoteMovieModel.mapToUi(), viewState.movieList[0])
     }
@@ -62,11 +60,7 @@ class MoviesListViewModelTest {
             whenever(moviesRepo.getMovies()).then { throw IOException() }
         }
         viewModel.processUiEvent(UiEvent.LoadMovies)
-        val viewState = captureViewState()
+        val viewState = captureViewState(viewStateObserver)
         assertEquals(Status.ERROR, viewState.status)
-    }
-
-    private fun captureViewState(): MoviesViewState = capture {
-        verify(viewStateObserver, atLeastOnce()).onChanged(it.capture())
     }
 }

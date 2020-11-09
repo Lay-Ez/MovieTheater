@@ -5,12 +5,14 @@ import androidx.lifecycle.Observer
 import com.example.movietheater.base.viewmodel.Status
 import com.example.movietheater.data.remote.MoviesRepo
 import com.example.movietheater.ui.CoroutineRule
-import com.example.movietheater.ui.capture
+import com.example.movietheater.ui.captureViewState
 import com.example.movietheater.ui.data.model.mapToUi
 import com.example.movietheater.ui.remoteMovieModel
-import com.nhaarman.mockitokotlin2.*
-import junit.framework.Assert.assertEquals
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -45,7 +47,7 @@ class MovieDetailViewModelTest {
             whenever(moviesRepo.getMovie(any())).thenReturn(remoteMovieModel)
         }
         viewModel.processUiEvent(UiEvent.LoadMovie(1))
-        val viewState = captureViewState()
+        val viewState = captureViewState(viewStateObserver)
         assertEquals(viewState.status, Status.CONTENT)
         assertEquals(viewState.movie, remoteMovieModel.mapToUi())
     }
@@ -56,11 +58,7 @@ class MovieDetailViewModelTest {
             whenever(moviesRepo.getMovie(any())).then { throw IOException() }
         }
         viewModel.processUiEvent(UiEvent.LoadMovie(1))
-        val viewState = captureViewState()
+        val viewState = captureViewState(viewStateObserver)
         assertEquals(viewState.status, Status.ERROR)
-    }
-
-    private fun captureViewState(): MovieDetailViewState = capture {
-        verify(viewStateObserver, atLeastOnce()).onChanged(it.capture())
     }
 }
