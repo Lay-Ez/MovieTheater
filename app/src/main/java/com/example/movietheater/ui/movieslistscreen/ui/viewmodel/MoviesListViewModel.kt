@@ -20,14 +20,16 @@ class MoviesListViewModel(private val moviesRepo: MoviesRepo) : BaseViewModel<Mo
 
     override fun reduce(event: Event, previousState: MoviesViewState): MoviesViewState? {
         when (event) {
-            is UiEvent.LoadMovies -> return loadMovies()
+            is UiEvent.LoadMovies -> loadMovies()
             is DataEvent.OnMoviesLoaded -> return onMoviesLoaded(event.movieList)
             is DataEvent.OnError -> return onError(event.error)
         }
         return null
     }
 
-    private fun loadMovies(): MoviesViewState {
+    private fun loadMovies() {
+        viewState.value =
+            MoviesViewState(status = Status.PROCESSING, movieList = listOf(), error = null)
         viewModelScope.launch {
             try {
                 val moviesList = moviesRepo.getMovies()
@@ -38,7 +40,6 @@ class MoviesListViewModel(private val moviesRepo: MoviesRepo) : BaseViewModel<Mo
                 processDataEvent(DataEvent.OnError(e))
             }
         }
-        return MoviesViewState(status = Status.PROCESSING, movieList = listOf(), error = null)
     }
 
     private fun onMoviesLoaded(moviesList: List<UiMovieModel>): MoviesViewState {
