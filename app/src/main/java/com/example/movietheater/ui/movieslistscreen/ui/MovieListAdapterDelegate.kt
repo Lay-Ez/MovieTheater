@@ -19,9 +19,24 @@ fun movieListAdapterDelegate(onClick: (UiMovieModel) -> Unit): AdapterDelegate<L
             findViewById<TextView>(R.id.yearTextView).text =
                 item.releaseDate.retrieveYear().toString()
             findViewById<TextView>(R.id.ratingTextView).text = item.voteAvg.toString()
+            try {
+                findViewById<TextView>(R.id.genreTextView).text = formatGenres(item.genres)
+            } catch (e: Exception) {
+            }
             Glide.with(containerView)
                 .load(item.posterImagePath)
                 .into(findViewById(R.id.posterImageView))
             containerView.cardView.setOnClickListener { onClick(item) }
         }
     }
+
+private fun formatGenres(genres: List<String>): String {
+    val sb = StringBuilder()
+    genres.forEachIndexed { index, genreModel ->
+        sb.append(genreModel)
+        if (index < genres.size - 1) {
+            sb.append(", ")
+        }
+    }
+    return sb.toString()
+}
