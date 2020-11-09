@@ -1,4 +1,4 @@
-package com.example.movietheater.ui.movieslistscreen.ui.viewmodel
+package com.example.movietheater.ui.moviedetailview.ui.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
@@ -8,12 +8,9 @@ import com.example.movietheater.ui.CoroutineRule
 import com.example.movietheater.ui.capture
 import com.example.movietheater.ui.data.model.mapToUi
 import com.example.movietheater.ui.remoteMovieModel
-import com.nhaarman.mockitokotlin2.atLeastOnce
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
+import com.nhaarman.mockitokotlin2.*
+import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -22,7 +19,7 @@ import org.junit.runners.JUnit4
 import java.io.IOException
 
 @RunWith(JUnit4::class)
-class MoviesListViewModelTest {
+class MovieDetailViewModelTest {
 
     @Rule
     @JvmField
@@ -33,40 +30,37 @@ class MoviesListViewModelTest {
     val coroutineRule = CoroutineRule()
 
     private val moviesRepo: MoviesRepo = mock()
-    private val viewStateObserver: Observer<MoviesViewState> = mock()
-    private lateinit var viewModel: MoviesListViewModel
+    private val viewStateObserver: Observer<MovieDetailViewState> = mock()
+    private lateinit var viewModel: MovieDetailViewModel
 
     @Before
     fun setUp() {
-        viewModel = MoviesListViewModel(moviesRepo)
+        viewModel = MovieDetailViewModel(moviesRepo)
         viewModel.viewState.observeForever(viewStateObserver)
     }
 
     @Test
-    fun `test successful movie list request`() {
-        val movieList = listOf(
-            remoteMovieModel
-        )
+    fun `test movie request successful`() {
         runBlocking {
-            whenever(moviesRepo.getMovies()).thenReturn(movieList)
+            whenever(moviesRepo.getMovie(any())).thenReturn(remoteMovieModel)
         }
-        viewModel.processUiEvent(UiEvent.LoadMovies)
+        viewModel.processUiEvent(UiEvent.LoadMovie(1))
         val viewState = captureViewState()
-        assertEquals(Status.CONTENT, viewState.status)
-        assertEquals(remoteMovieModel.mapToUi(), viewState.movieList[0])
+        assertEquals(viewState.status, Status.CONTENT)
+        assertEquals(viewState.movie, remoteMovieModel.mapToUi())
     }
 
     @Test
-    fun `test movie list request error`() {
+    fun `test movie request error`() {
         runBlocking {
-            whenever(moviesRepo.getMovies()).then { throw IOException() }
+            whenever(moviesRepo.getMovie(any())).then { throw IOException() }
         }
-        viewModel.processUiEvent(UiEvent.LoadMovies)
+        viewModel.processUiEvent(UiEvent.LoadMovie(1))
         val viewState = captureViewState()
-        assertEquals(Status.ERROR, viewState.status)
+        assertEquals(viewState.status, Status.ERROR)
     }
 
-    private fun captureViewState(): MoviesViewState = capture {
+    private fun captureViewState(): MovieDetailViewState = capture {
         verify(viewStateObserver, atLeastOnce()).onChanged(it.capture())
     }
 }

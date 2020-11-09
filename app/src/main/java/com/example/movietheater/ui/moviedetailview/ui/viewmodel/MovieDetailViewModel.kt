@@ -22,14 +22,19 @@ class MovieDetailViewModel(private val moviesRepo: MoviesRepo) :
 
     override fun reduce(event: Event, previousState: MovieDetailViewState): MovieDetailViewState? {
         when (event) {
-            is UiEvent.LoadMovie -> return loadMovie(event.movieId)
+            is UiEvent.LoadMovie -> loadMovie(event.movieId)
             is DataEvent.OnMovieLoaded -> return onMovieLoaded(event.movie)
             is DataEvent.OnError -> return onError(event.error)
         }
         return null
     }
 
-    private fun loadMovie(movieId: Int): MovieDetailViewState {
+    private fun loadMovie(movieId: Int) {
+        viewState.value = MovieDetailViewState(
+            status = Status.PROCESSING,
+            movie = null,
+            error = null
+        )
         viewModelScope.launch {
             try {
                 val movie = moviesRepo.getMovie(movieId)?.mapToUi()
@@ -40,11 +45,6 @@ class MovieDetailViewModel(private val moviesRepo: MoviesRepo) :
                 processDataEvent(DataEvent.OnError(e))
             }
         }
-        return MovieDetailViewState(
-            status = Status.PROCESSING,
-            movie = null,
-            error = null
-        )
     }
 
     private fun onMovieLoaded(
