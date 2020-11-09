@@ -11,7 +11,6 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.movietheater.R
 import com.example.movietheater.base.extensions.retrieveYear
-import com.example.movietheater.base.extensions.round
 import com.example.movietheater.base.viewmodel.Status
 import com.example.movietheater.ui.data.model.UiMovieModel
 import com.example.movietheater.ui.moviedetailview.di.ExoPlayerProvider
@@ -90,7 +89,7 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
         titleTextView.text = movie.title
         yearTextView.text = movie.releaseDate.retrieveYear().toString()
         genreTextView.text = formatGenres(movie.genres)
-        scoreTextView.text = movie.voteAvg.round(1).toString()
+        scoreTextView.text = movie.voteAvg.toString()
         voteCountTextView.text = movie.voteCount.toString()
         descriptionTextView.text = movie.overview
     }
