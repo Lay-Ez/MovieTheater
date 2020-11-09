@@ -6,6 +6,7 @@ import com.example.movietheater.R
 import com.example.movietheater.base.ListItem
 import com.example.movietheater.base.extensions.retrieveYear
 import com.example.movietheater.ui.data.model.UiMovieModel
+import com.example.movietheater.ui.utils.formatGenres
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateLayoutContainer
 import kotlinx.android.synthetic.main.movie_list_item.view.*
@@ -22,6 +23,7 @@ fun movieListAdapterDelegate(onClick: (UiMovieModel) -> Unit): AdapterDelegate<L
             try {
                 findViewById<TextView>(R.id.genreTextView).text = formatGenres(item.genres)
             } catch (e: Exception) {
+                // View exists only in portrait mode
             }
             Glide.with(containerView)
                 .load(item.posterImagePath)
@@ -29,14 +31,3 @@ fun movieListAdapterDelegate(onClick: (UiMovieModel) -> Unit): AdapterDelegate<L
             containerView.cardView.setOnClickListener { onClick(item) }
         }
     }
-
-private fun formatGenres(genres: List<String>): String {
-    val sb = StringBuilder()
-    genres.forEachIndexed { index, genreModel ->
-        sb.append(genreModel)
-        if (index < genres.size - 1) {
-            sb.append(", ")
-        }
-    }
-    return sb.toString()
-}
