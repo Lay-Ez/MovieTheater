@@ -1,6 +1,5 @@
 package com.example.movietheater.ui.movieslistscreen.ui
 
-import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.example.movietheater.R
 import com.example.movietheater.base.ListItem
@@ -16,15 +15,10 @@ fun movieListAdapterDelegate(onClick: (UiMovieModel) -> Unit): AdapterDelegate<L
         R.layout.movie_list_item
     ) {
         bind {
-            findViewById<TextView>(R.id.titleTextView).text = item.title
-            findViewById<TextView>(R.id.yearTextView).text =
-                item.releaseDate.retrieveYear().toString()
-            findViewById<TextView>(R.id.ratingTextView).text = item.voteAvg.toString()
-            try {
-                findViewById<TextView>(R.id.genreTextView).text = formatGenres(item.genres)
-            } catch (e: Exception) {
-                // View exists only in portrait mode
-            }
+            itemView.titleTextView.text = item.title
+            itemView.yearTextView.text = item.releaseDate.retrieveYear().toString()
+            itemView.ratingTextView.text = item.voteAvg.toString()
+            itemView.genreTextView.text = formatGenres(item.genres)
             Glide.with(containerView)
                 .load(item.posterImagePath)
                 .into(findViewById(R.id.posterImageView))
