@@ -105,7 +105,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:paddingBottom="32dp"
                 app:layout_constraintEnd_toEndOf="@+id/yearTextView"
                 app:layout_constraintStart_toStartOf="@+id/yearTextView"
                 app:layout_constraintTop_toBottomOf="@+id/yearTextView"
@@ -115,9 +114,12 @@
                 android:id="@+id/scoreTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                 app:layout_constraintBottom_toBottomOf="@id/barrier"
                 app:layout_constraintStart_toStartOf="@+id/genreTextView"
+                app:layout_constraintTop_toBottomOf="@+id/genreTextView"
+                app:layout_constraintVertical_bias="1.0"
                 tools:text="8.5" />
 
             <TextView
@@ -168,7 +170,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:barrierDirection="bottom"
-                app:constraint_referenced_ids="posterImageView,genreTextView"
+                app:constraint_referenced_ids="posterImageView,scoreTextView"
                 tools:layout_editor_absoluteY="731dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
