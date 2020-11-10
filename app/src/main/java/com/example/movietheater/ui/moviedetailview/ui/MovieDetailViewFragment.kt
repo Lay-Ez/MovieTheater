@@ -17,6 +17,7 @@ import com.example.movietheater.ui.data.model.UiMovieModel
 import com.example.movietheater.ui.moviedetailview.di.ExoPlayerProvider
 import com.example.movietheater.ui.moviedetailview.ui.viewmodel.MovieDetailViewModel
 import com.example.movietheater.ui.moviedetailview.ui.viewmodel.UiEvent
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.material.snackbar.Snackbar
@@ -32,6 +33,7 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
     private val viewModel: MovieDetailViewModel by viewModel()
     private val playerProvider: ExoPlayerProvider = get()
     private val player: SimpleExoPlayer = playerProvider.getPlayer()
+    private lateinit var shimmerFrameLayout: ShimmerFrameLayout
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
@@ -47,6 +49,7 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        shimmerFrameLayout = shimmerLayout as ShimmerFrameLayout
         toolbar.setNavigationOnClickListener {
             requireActivity().onBackPressed()
         }
@@ -117,9 +120,13 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
 
     private fun displayLoad(isLoading: Boolean) {
         if (isLoading) {
+            shimmerFrameLayout.visibility = View.VISIBLE
+            shimmerFrameLayout.startShimmer()
             nestedScrollView.visibility = View.INVISIBLE
             progressBar.visibility = View.VISIBLE
         } else {
+            shimmerFrameLayout.stopShimmer()
+            shimmerFrameLayout.visibility = View.GONE
             nestedScrollView.visibility = View.VISIBLE
             progressBar.visibility = View.INVISIBLE
         }
