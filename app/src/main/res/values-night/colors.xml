@@ -6,4 +6,6 @@
     <color name="colorAccent">#0049A3</color>
 
     <color name="colorOnPrimary">#FFFFFF</color>
+
+    <color name="colorBackgroundShimmer">#555555</color>
 </resources>

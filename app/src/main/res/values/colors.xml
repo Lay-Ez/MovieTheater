@@ -11,4 +11,6 @@
     <color name="color_rating_circle_fill">#B3000000</color>
 
     <color name="color_player_text">#FFFFFF</color>
+
+    <color name="colorBackgroundShimmer">#dddddd</color>
 </resources>
