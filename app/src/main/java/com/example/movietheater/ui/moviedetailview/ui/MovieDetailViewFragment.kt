@@ -16,6 +16,7 @@ import com.example.movietheater.ui.data.model.UiMovieModel
 import com.example.movietheater.ui.moviedetailview.di.ExoPlayerProvider
 import com.example.movietheater.ui.moviedetailview.ui.viewmodel.MovieDetailViewModel
 import com.example.movietheater.ui.moviedetailview.ui.viewmodel.UiEvent
+import com.example.movietheater.ui.utils.formatGenres
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -129,17 +130,6 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
             nestedScrollView.visibility = View.VISIBLE
             progressBar.visibility = View.INVISIBLE
         }
-    }
-
-    private fun formatGenres(genres: List<String>): String {
-        val sb = StringBuilder()
-        genres.forEachIndexed { index, genreModel ->
-            sb.append(genreModel)
-            if (index < genres.size - 1) {
-                sb.append(", ")
-            }
-        }
-        return sb.toString()
     }
 
     private fun enterFullScreenMode() {
