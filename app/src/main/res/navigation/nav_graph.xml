@@ -24,5 +24,8 @@
         <argument
             android:name="movieId"
             app:argType="integer" />
+        <argument
+            android:name="moviePosterUri"
+            app:argType="string" />
     </fragment>
 </navigation>

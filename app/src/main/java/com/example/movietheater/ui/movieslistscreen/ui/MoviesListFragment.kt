@@ -2,8 +2,10 @@ package com.example.movietheater.ui.movieslistscreen.ui
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.movietheater.R
@@ -24,11 +26,14 @@ class MoviesListFragment : Fragment(R.layout.fragment_movies_list) {
 
     private val viewModel: MoviesListViewModel by viewModel()
     private val adapter: ListDelegationAdapter<List<ListItem>> = ListDelegationAdapter(
-        movieListAdapterDelegate { openDetailedViewForMovie(it) }
+        movieListAdapterDelegate { uiMovieModel, imageView ->
+            openDetailedViewForMovie(uiMovieModel, imageView)
+        }
     )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        postponeEnterTransition()
         setupAdapter()
         viewModel.viewState.observe(viewLifecycleOwner, Observer {
             displayState(it)
@@ -72,6 +77,10 @@ class MoviesListFragment : Fragment(R.layout.fragment_movies_list) {
     private fun setupAdapter() {
         moviesRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         moviesRecyclerView.adapter = adapter
+        moviesRecyclerView.viewTreeObserver.addOnPreDrawListener {
+            startPostponedEnterTransition()
+            true
+        }
     }
 
     private fun isContentAvailable(): Boolean {
@@ -79,8 +88,10 @@ class MoviesListFragment : Fragment(R.layout.fragment_movies_list) {
         return status != null && status == Status.CONTENT
     }
 
-    private fun openDetailedViewForMovie(movie: UiMovieModel) {
-        val action = MoviesListFragmentDirections.toMovieDetailViewFragment(movie.id)
-        findNavController().navigate(action)
+    private fun openDetailedViewForMovie(movie: UiMovieModel, imageView: ImageView) {
+        val extras = FragmentNavigatorExtras(imageView to movie.posterImagePath)
+        val action =
+            MoviesListFragmentDirections.toMovieDetailViewFragment(movie.id, movie.posterImagePath)
+        findNavController().navigate(action, extras)
     }
 }
