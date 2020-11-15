@@ -25,16 +25,13 @@ class MovieDetailViewModel(private val moviesRepo: MoviesRepo) :
             is UiEvent.LoadMovie -> loadMovie(event.movieId)
             is DataEvent.OnMovieLoaded -> return onMovieLoaded(event.movie)
             is DataEvent.OnError -> return onError(event.error)
+            is DataEvent.OnLoadStarted -> onLoad()
         }
         return null
     }
 
     private fun loadMovie(movieId: Int) {
-        viewState.value = MovieDetailViewState(
-            status = Status.PROCESSING,
-            movie = null,
-            error = null
-        )
+        processDataEvent(DataEvent.OnLoadStarted)
         viewModelScope.launch {
             try {
                 val movie = moviesRepo.getMovie(movieId)?.mapToUi()
@@ -64,6 +61,14 @@ class MovieDetailViewModel(private val moviesRepo: MoviesRepo) :
             status = Status.ERROR,
             movie = null,
             error = error
+        )
+    }
+
+    private fun onLoad(): MovieDetailViewState {
+        return MovieDetailViewState(
+            status = Status.PROCESSING,
+            movie = null,
+            error = null
         )
     }
 }
