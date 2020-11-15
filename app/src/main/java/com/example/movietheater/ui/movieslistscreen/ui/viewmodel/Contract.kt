@@ -13,6 +13,7 @@ data class MoviesViewState(
 sealed class DataEvent : Event {
     data class OnMoviesLoaded(val movieList: List<UiMovieModel>) : DataEvent()
     data class OnError(val error: Throwable) : DataEvent()
+    object OnLoadStarted : DataEvent()
 }
 
 sealed class UiEvent : Event {
