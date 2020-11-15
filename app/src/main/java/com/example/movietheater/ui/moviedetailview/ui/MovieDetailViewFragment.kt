@@ -2,6 +2,7 @@ package com.example.movietheater.ui.moviedetailview.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.transition.TransitionInflater
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
@@ -50,6 +51,7 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         shimmerFrameLayout = shimmerLayout as ShimmerFrameLayout
+        startImageTransitionAnimation()
         toolbar.setNavigationOnClickListener {
             requireActivity().onBackPressed()
         }
@@ -88,6 +90,15 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
         super.onStop()
     }
 
+    private fun startImageTransitionAnimation() {
+        posterImageView.transitionName = args.moviePosterUri
+        sharedElementEnterTransition =
+            TransitionInflater.from(requireContext()).inflateTransition(android.R.transition.move)
+        Glide.with(posterImageView)
+            .load(args.moviePosterUri)
+            .into(posterImageView)
+    }
+
     private fun displayMovie(movie: UiMovieModel) {
         Glide.with(constrainLayout).load(movie.posterImagePath).into(posterImageView)
         titleTextView.text = movie.title
@@ -119,16 +130,19 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
     }
 
     private fun displayLoad(isLoading: Boolean) {
+        val contentViews = listOf(
+            titleTextView, yearTextView, genreTextView, scoreTextView, voteCountTextView,
+            divider, descriptionTextView, divider2, playerView
+        )
+        val loadViews = listOf(shimmerFrameLayout, progressBar)
         if (isLoading) {
-            shimmerFrameLayout.visibility = View.VISIBLE
+            contentViews.forEach { it.visibility = View.INVISIBLE }
+            loadViews.forEach { it.visibility = View.VISIBLE }
             shimmerFrameLayout.startShimmer()
-            nestedScrollView.visibility = View.INVISIBLE
-            progressBar.visibility = View.VISIBLE
         } else {
             shimmerFrameLayout.stopShimmer()
-            shimmerFrameLayout.visibility = View.GONE
-            nestedScrollView.visibility = View.VISIBLE
-            progressBar.visibility = View.INVISIBLE
+            loadViews.forEach { it.visibility = View.GONE }
+            contentViews.forEach { it.visibility = View.VISIBLE }
         }
     }
 

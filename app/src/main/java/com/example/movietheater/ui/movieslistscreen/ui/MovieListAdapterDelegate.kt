@@ -1,5 +1,6 @@
 package com.example.movietheater.ui.movieslistscreen.ui
 
+import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.example.movietheater.R
 import com.example.movietheater.base.ListItem
@@ -10,7 +11,7 @@ import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateLayoutContainer
 import kotlinx.android.synthetic.main.movie_list_item.view.*
 
-fun movieListAdapterDelegate(onClick: (UiMovieModel) -> Unit): AdapterDelegate<List<ListItem>> =
+fun movieListAdapterDelegate(onClick: (UiMovieModel, ImageView) -> Unit): AdapterDelegate<List<ListItem>> =
     adapterDelegateLayoutContainer<UiMovieModel, ListItem>(
         R.layout.movie_list_item
     ) {
@@ -19,9 +20,10 @@ fun movieListAdapterDelegate(onClick: (UiMovieModel) -> Unit): AdapterDelegate<L
             itemView.yearTextView.text = item.releaseDate.retrieveYear().toString()
             itemView.ratingTextView.text = item.voteAvg.toString()
             itemView.genreTextView.text = formatGenres(item.genres)
+            itemView.posterImageView.transitionName = item.posterImagePath
             Glide.with(containerView)
                 .load(item.posterImagePath)
-                .into(findViewById(R.id.posterImageView))
-            containerView.cardView.setOnClickListener { onClick(item) }
+                .into(itemView.posterImageView)
+            containerView.cardView.setOnClickListener { onClick(item, itemView.posterImageView) }
         }
     }
