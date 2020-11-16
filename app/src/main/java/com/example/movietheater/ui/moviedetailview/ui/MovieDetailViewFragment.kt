@@ -18,6 +18,7 @@ import com.example.movietheater.ui.moviedetailview.di.ExoPlayerProvider
 import com.example.movietheater.ui.moviedetailview.ui.viewmodel.MovieDetailViewModel
 import com.example.movietheater.ui.moviedetailview.ui.viewmodel.UiEvent
 import com.example.movietheater.ui.utils.formatGenres
+import com.example.movietheater.ui.utils.onError
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -27,6 +28,7 @@ import kotlinx.android.synthetic.main.fragment_movie_detail_view.*
 import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.IOException
+
 
 class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
 
@@ -62,6 +64,9 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
 
     override fun onStart() {
         super.onStart()
+        player.onError {
+            Snackbar.make(playerView, R.string.play_error_msg, Snackbar.LENGTH_LONG).show()
+        }
         playerView.player = player
         viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
             when (viewState.status) {

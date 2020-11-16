@@ -7,7 +7,9 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.movietheater.R
 import com.example.movietheater.ui.moviedetailview.di.ExoPlayerProvider
+import com.example.movietheater.ui.utils.onError
 import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_full_screen_player.*
 import kotlinx.android.synthetic.main.exo_player_control_view.view.*
 import org.koin.android.ext.android.get
@@ -66,6 +68,9 @@ class FullScreenPlayerActivity : AppCompatActivity() {
 
     private fun initializePlayer() {
         playerView.player = player
+        player.onError {
+            Snackbar.make(playerView, R.string.play_error_msg, Snackbar.LENGTH_LONG).show()
+        }
         playerView.exo_fullscreen_icon.setOnClickListener {
             onBackPressed()
         }
