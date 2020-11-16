@@ -107,6 +107,7 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
         scoreTextView.text = movie.voteAvg.toString()
         voteCountTextView.text = movie.voteCount.toString()
         descriptionTextView.text = movie.overview
+        ratingBar.rating = movie.voteAvg.toFloat()
     }
 
     private fun displayPlayer(videoUri: String) {
@@ -118,7 +119,6 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
 
     private fun displayError(error: Throwable) {
         nestedScrollView.visibility = View.INVISIBLE
-        progressBar.visibility = View.INVISIBLE
         when (error) {
             is IOException -> {
                 Snackbar.make(toolbar, R.string.network_error_msg, Snackbar.LENGTH_LONG).show()
@@ -131,10 +131,12 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
 
     private fun displayLoad(isLoading: Boolean) {
         val contentViews = listOf(
-            titleTextView, yearTextView, genreTextView, scoreTextView, voteCountTextView,
+            titleTextView, yearTextView, genreTextView, scoreTextView, voteCountTextView, ratingBar,
             divider, descriptionTextView, divider2, playerView
         )
-        val loadViews = listOf(shimmerFrameLayout, progressBar)
+
+        val loadViews = listOf(shimmerFrameLayout)
+
         if (isLoading) {
             contentViews.forEach { it.visibility = View.INVISIBLE }
             loadViews.forEach { it.visibility = View.VISIBLE }

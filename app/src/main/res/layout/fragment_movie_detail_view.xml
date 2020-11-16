@@ -20,16 +20,6 @@
         app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
         app:title="@string/movie_detail_toolbar_title" />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-
     <include
         android:id="@+id/shimmerLayout"
         layout="@layout/fragment_movie_detail_view_shimmer_placeholder"
@@ -116,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                app:layout_constraintBottom_toBottomOf="@id/barrier"
+                app:layout_constraintBottom_toTopOf="@+id/ratingBar"
                 app:layout_constraintStart_toStartOf="@+id/genreTextView"
                 app:layout_constraintTop_toBottomOf="@+id/genreTextView"
                 app:layout_constraintVertical_bias="1.0"
@@ -130,6 +120,16 @@
                 app:layout_constraintBaseline_toBaselineOf="@+id/scoreTextView"
                 app:layout_constraintStart_toEndOf="@+id/scoreTextView"
                 tools:text="856" />
+
+            <RatingBar
+                android:id="@+id/ratingBar"
+                style="@android:style/Widget.Material.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:numStars="10"
+                app:layout_constraintBottom_toTopOf="@id/barrier"
+                app:layout_constraintStart_toStartOf="@+id/scoreTextView" />
 
             <View
                 android:id="@+id/divider"
