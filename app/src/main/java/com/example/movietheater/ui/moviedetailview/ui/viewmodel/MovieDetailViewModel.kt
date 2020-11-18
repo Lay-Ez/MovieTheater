@@ -30,13 +30,20 @@ class MovieDetailViewModel(
 
     override fun reduce(event: Event, previousState: MovieDetailViewState): MovieDetailViewState? {
         when (event) {
-            is UiEvent.LoadMovie -> loadMovie(event.movieId)
+            is UiEvent.LoadMovie -> onLoadMovie(event.movieId)
             is UiEvent.OnSavePlayPosition -> savePlayPosition(event.playPosition)
             is DataEvent.OnMovieLoaded -> return onMovieLoaded(event.movie)
             is DataEvent.OnError -> return onError(event.error)
             is DataEvent.OnLoadStarted -> onLoad()
         }
         return null
+    }
+
+    private fun onLoadMovie(movieId: Int) {
+        val isRequestedMovieCashed = viewState.value?.movie?.id == movieId
+        if (!isRequestedMovieCashed) {
+            loadMovie(movieId)
+        }
     }
 
     private fun loadMovie(movieId: Int) {

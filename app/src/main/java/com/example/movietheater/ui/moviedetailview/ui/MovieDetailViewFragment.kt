@@ -63,17 +63,9 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.processUiEvent(UiEvent.OnSavePlayPosition(player.currentPosition))
-    }
-
     override fun onStart() {
         super.onStart()
-        player.onError {
-            Snackbar.make(playerView, R.string.play_error_msg, Snackbar.LENGTH_LONG).show()
-        }
-        playerView.player = player
+        initializePlayer()
         viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
             when (viewState.status) {
                 Status.CONTENT -> {
@@ -91,14 +83,24 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
                 }
             }
         })
-        if (!isContentAvailable()) {
-            viewModel.processUiEvent(UiEvent.LoadMovie(args.movieId))
-        }
+        viewModel.processUiEvent(UiEvent.LoadMovie(args.movieId))
     }
 
     override fun onStop() {
         playerView.player = null
         super.onStop()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.processUiEvent(UiEvent.OnSavePlayPosition(player.currentPosition))
+    }
+
+    private fun initializePlayer() {
+        player.onError {
+            Snackbar.make(playerView, R.string.play_error_msg, Snackbar.LENGTH_LONG).show()
+        }
+        playerView.player = player
     }
 
     private fun startImageTransitionAnimation() {
@@ -168,9 +170,5 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
         with(Intent(requireActivity(), FullScreenPlayerActivity::class.java)) {
             startActivity(this)
         }
-    }
-
-    private fun isContentAvailable(): Boolean {
-        return viewModel.viewState.value?.movie?.id == args.movieId
     }
 }
