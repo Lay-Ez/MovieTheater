@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.example.movietheater.R
 import com.example.movietheater.base.extensions.retrieveYear
 import com.example.movietheater.base.viewmodel.Status
+import com.example.movietheater.ui.data.PlayPositionsRepo
 import com.example.movietheater.ui.data.model.UiMovieModel
 import com.example.movietheater.ui.moviedetailview.di.ExoPlayerProvider
 import com.example.movietheater.ui.moviedetailview.ui.viewmodel.MovieDetailViewModel
@@ -34,6 +35,7 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
 
     private val args: MovieDetailViewFragmentArgs by navArgs()
     private val viewModel: MovieDetailViewModel by viewModel()
+    private val playPositionsRepo: PlayPositionsRepo = get()
     private val playerProvider: ExoPlayerProvider = get()
     private val player: SimpleExoPlayer = playerProvider.getPlayer()
     private lateinit var shimmerFrameLayout: ShimmerFrameLayout
@@ -42,6 +44,15 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
         override fun handleOnBackPressed() {
             playerProvider.releasePlayer()
             findNavController().navigateUp()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        val currentUri = player.currentMediaItem?.playbackProperties?.uri?.toString()
+        val currentPosition = player.currentPosition
+        currentUri?.let { videoUri ->
+            playPositionsRepo.savePlayPosition(videoUri, currentPosition)
         }
     }
 
@@ -74,7 +85,7 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
                     displayLoad(false)
                     val movie = viewState.movie!!
                     displayMovie(movie)
-                    displayPlayer(movie.videoUri)
+                    setupPlayer(movie.videoUri)
                 }
                 Status.ERROR -> {
                     displayLoad(false)
@@ -115,10 +126,15 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
         ratingBar.rating = movie.voteAvg.toFloat()
     }
 
-    private fun displayPlayer(videoUri: String) {
-        if (player.currentMediaItem?.playbackProperties?.uri.toString() != videoUri) {
-            player.setMediaItem(MediaItem.fromUri(videoUri))
-            player.prepare()
+    private fun setupPlayer(videoUri: String) {
+        val playerNotSet = player.currentMediaItem?.playbackProperties?.uri?.toString() != videoUri
+        if (playerNotSet) {
+            val playPosition = playPositionsRepo.getPlayPosition(videoUri)
+            player.apply {
+                setMediaItem(MediaItem.fromUri(videoUri))
+                seekTo(playPosition)
+                prepare()
+            }
         }
     }
 

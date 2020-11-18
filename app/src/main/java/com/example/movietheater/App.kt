@@ -2,6 +2,7 @@ package com.example.movietheater
 
 import android.app.Application
 import com.example.movietheater.data.di.dataModule
+import com.example.movietheater.ui.data.di.uiDataModule
 import com.example.movietheater.ui.moviedetailview.di.movieDetailModule
 import com.example.movietheater.ui.movieslistscreen.di.movieListModule
 import org.koin.android.ext.koin.androidContext
@@ -14,7 +15,7 @@ class App : Application() {
         startKoin {
             androidContext(this@App)
             modules(
-                dataModule, movieListModule,
+                dataModule, uiDataModule, movieListModule,
                 movieDetailModule
             )
         }
