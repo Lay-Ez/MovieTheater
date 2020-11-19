@@ -4,13 +4,11 @@
     <color name="colorPrimaryVariant">#ffbd45</color>
     <color name="colorPrimaryDark">#c25e00</color>
     <color name="colorAccent">#0071fb</color>
-
     <color name="colorOnPrimary">#000000</color>
 
     <color name="color_rating_circle_outline">#FFFFFF</color>
     <color name="color_rating_circle_fill">#B3000000</color>
-
     <color name="color_player_text">#FFFFFF</color>
-
     <color name="colorBackgroundShimmer">#dddddd</color>
+    <color name="color_placeholder_icon">#979797</color>
 </resources>

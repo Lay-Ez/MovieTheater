@@ -23,6 +23,7 @@ fun movieListAdapterDelegate(onClick: (UiMovieModel, ImageView) -> Unit): Adapte
             itemView.posterImageView.transitionName = item.posterImagePath
             Glide.with(containerView)
                 .load(item.posterImagePath)
+                .placeholder(R.drawable.list_item_image_placeholder)
                 .into(itemView.posterImageView)
             containerView.cardView.setOnClickListener { onClick(item, itemView.posterImageView) }
         }

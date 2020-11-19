@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android"
     android:opacity="opaque">
-    <item android:drawable="@color/colorPrimaryDark" />
+    <item android:drawable="@color/colorBackgroundShimmer" />
     <item
-        android:drawable="@drawable/ic_splashscreen"
+        android:drawable="@drawable/list_item_image_icon"
         android:gravity="center" />
+
 </layer-list>
