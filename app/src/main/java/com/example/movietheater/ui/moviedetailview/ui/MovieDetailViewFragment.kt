@@ -39,6 +39,13 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
     private val player: SimpleExoPlayer = playerProvider.getPlayer()
     private lateinit var shimmerFrameLayout: ShimmerFrameLayout
 
+    private val contentViews by lazy {
+        listOf(
+            titleTextView, yearTextView, genreTextView, scoreTextView, voteCountTextView, ratingBar,
+            divider, descriptionTextView, divider2, playerView
+        )
+    }
+
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             playerProvider.releasePlayer()
@@ -136,7 +143,7 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
     }
 
     private fun displayError(error: Throwable) {
-        nestedScrollView.visibility = View.INVISIBLE
+        scrollView.visibility = View.INVISIBLE
         when (error) {
             is IOException -> {
                 Snackbar.make(toolbar, R.string.network_error_msg, Snackbar.LENGTH_LONG).show()
@@ -148,20 +155,17 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
     }
 
     private fun displayLoad(isLoading: Boolean) {
-        val contentViews = listOf(
-            titleTextView, yearTextView, genreTextView, scoreTextView, voteCountTextView, ratingBar,
-            divider, descriptionTextView, divider2, playerView
-        )
-
-        val loadViews = listOf(shimmerFrameLayout)
-
         if (isLoading) {
-            contentViews.forEach { it.visibility = View.INVISIBLE }
-            loadViews.forEach { it.visibility = View.VISIBLE }
-            shimmerFrameLayout.startShimmer()
+            contentViews.forEach { it.visibility = View.GONE }
+            shimmerFrameLayout.apply {
+                visibility = View.VISIBLE
+                startShimmer()
+            }
         } else {
-            shimmerFrameLayout.stopShimmer()
-            loadViews.forEach { it.visibility = View.GONE }
+            shimmerFrameLayout.apply {
+                stopShimmer()
+                visibility = View.GONE
+            }
             contentViews.forEach { it.visibility = View.VISIBLE }
         }
     }
