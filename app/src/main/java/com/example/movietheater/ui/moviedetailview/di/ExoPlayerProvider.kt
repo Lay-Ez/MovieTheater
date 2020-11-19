@@ -1,6 +1,7 @@
 package com.example.movietheater.ui.moviedetailview.di
 
 import android.content.Context
+import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 
 class ExoPlayerProvider(private val context: Context) {
@@ -15,6 +16,16 @@ class ExoPlayerProvider(private val context: Context) {
                     playWhenReady = false
                     seekTo(0)
                 }
+                player!!.addListener(object : Player.EventListener {
+                    override fun onPlaybackStateChanged(state: Int) {
+                        if (state == Player.STATE_ENDED) {
+                            player!!.apply {
+                                seekTo(0)
+                                playWhenReady = false
+                            }
+                        }
+                    }
+                })
             }
         }
         return player!!
