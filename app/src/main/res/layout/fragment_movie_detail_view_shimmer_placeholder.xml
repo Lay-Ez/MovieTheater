@@ -67,17 +67,6 @@
             app:layout_constraintTop_toBottomOf="@+id/yearTextViewP"
             tools:text="Drama, Music" />
 
-        <TextView
-            android:id="@+id/scoreTextViewP"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:background="@color/colorBackgroundShimmer"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-            app:layout_constraintBottom_toBottomOf="@id/barrierP"
-            app:layout_constraintEnd_toEndOf="@+id/genreTextViewP"
-            app:layout_constraintStart_toStartOf="@+id/genreTextViewP"
-            tools:text="8.5" />
-
         <View
             android:id="@+id/dividerP"
             android:layout_width="0dp"
@@ -93,13 +82,13 @@
         <TextView
             android:id="@+id/descriptionTextViewP"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_marginTop="16dp"
             android:background="@color/colorBackgroundShimmer"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             app:layout_constraintEnd_toEndOf="@+id/dividerP"
             app:layout_constraintStart_toStartOf="@+id/posterImageViewP"
-            app:layout_constraintTop_toBottomOf="@+id/dividerP"
+            app:layout_constraintTop_toBottomOf="@+id/divider4"
             tools:text="Under the direction of a ruthless instructor, a talented young drummer begins to pursue perfection at any cost, even his humanity." />
 
         <ImageView
@@ -107,9 +96,7 @@
             android:layout_width="0dp"
             android:layout_height="216dp"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="24dp"
             android:background="@color/colorBackgroundShimmer"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/descriptionTextViewP"
             app:layout_constraintStart_toStartOf="@+id/descriptionTextViewP"
             app:layout_constraintTop_toBottomOf="@+id/divider2P" />
@@ -121,6 +108,26 @@
             app:barrierDirection="bottom"
             app:constraint_referenced_ids="posterImageViewP,genreTextViewP"
             tools:layout_editor_absoluteY="731dp" />
+
+        <View
+            android:id="@+id/divider4"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="@+id/titleTextViewP"
+            app:layout_constraintStart_toStartOf="@+id/posterImageViewP"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/colorBackgroundShimmer"
+            app:layout_constraintEnd_toEndOf="@+id/dividerP"
+            app:layout_constraintStart_toStartOf="@+id/dividerP"
+            app:layout_constraintTop_toBottomOf="@+id/dividerP" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.facebook.shimmer.ShimmerFrameLayout>

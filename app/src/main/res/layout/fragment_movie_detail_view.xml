@@ -104,12 +104,10 @@
                 android:id="@+id/scoreTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="8dp"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                app:layout_constraintBottom_toTopOf="@+id/ratingBar"
-                app:layout_constraintStart_toStartOf="@+id/genreTextView"
-                app:layout_constraintTop_toBottomOf="@+id/genreTextView"
-                app:layout_constraintVertical_bias="1.0"
+                app:layout_constraintBottom_toBottomOf="@+id/ratingBar"
+                app:layout_constraintStart_toEndOf="@+id/ratingBar"
                 tools:text="8.5" />
 
             <TextView
@@ -123,16 +121,14 @@
 
             <RatingBar
                 android:id="@+id/ratingBar"
-                style="@android:style/Widget.Material.RatingBar.Small"
+                style="@android:style/Widget.DeviceDefault.RatingBar.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="6dp"
+                android:layout_marginTop="8dp"
                 android:max="10"
                 android:numStars="10"
-                app:layout_constraintBottom_toTopOf="@id/barrier"
-                app:layout_constraintEnd_toEndOf="@+id/genreTextView"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/scoreTextView" />
+                app:layout_constraintStart_toStartOf="@+id/ratingLabelTextView"
+                app:layout_constraintTop_toBottomOf="@+id/ratingLabelTextView" />
 
             <View
                 android:id="@+id/divider"
@@ -142,7 +138,7 @@
                 android:background="?android:attr/listDivider"
                 app:layout_constraintEnd_toEndOf="@+id/titleTextView"
                 app:layout_constraintStart_toStartOf="@+id/posterImageView"
-                app:layout_constraintTop_toBottomOf="@id/barrier" />
+                app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
 
             <TextView
                 android:id="@+id/descriptionTextView"
@@ -174,8 +170,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:barrierDirection="bottom"
-                app:constraint_referenced_ids="posterImageView,scoreTextView"
+                app:constraint_referenced_ids="posterImageView, genreTextView"
                 tools:layout_editor_absoluteY="731dp" />
+
+            <View
+                android:id="@+id/divider3"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="@+id/titleTextView"
+                app:layout_constraintStart_toStartOf="@+id/posterImageView"
+                app:layout_constraintTop_toBottomOf="@id/barrier" />
+
+            <TextView
+                android:id="@+id/ratingLabelTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/rating_label"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                app:layout_constraintStart_toStartOf="@+id/divider3"
+                app:layout_constraintTop_toBottomOf="@+id/divider3" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
