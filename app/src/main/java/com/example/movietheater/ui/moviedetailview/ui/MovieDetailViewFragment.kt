@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.transition.TransitionInflater
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.core.transition.addListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -77,8 +78,7 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
             when (viewState.status) {
                 Status.CONTENT -> {
                     displayLoad(false)
-                    val movie = viewState.movie!!
-                    displayMovie(movie)
+                    displayMovie(viewState.movie!!)
                     processPlayState(viewState.playState)
                 }
                 Status.ERROR -> {
@@ -90,7 +90,6 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
                 }
             }
         })
-        viewModel.processUiEvent(UiEvent.LoadMovie(args.movieId))
     }
 
     override fun onStop() {
@@ -112,8 +111,12 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
 
     private fun startImageTransitionAnimation() {
         posterImageView.transitionName = args.moviePosterUri
-        sharedElementEnterTransition =
+        val transition =
             TransitionInflater.from(requireContext()).inflateTransition(android.R.transition.move)
+        transition.addListener(onEnd = {
+            viewModel.processUiEvent(UiEvent.LoadMovie(args.movieId))
+        })
+        sharedElementEnterTransition = transition
         Glide.with(posterImageView)
             .load(args.moviePosterUri)
             .into(posterImageView)
