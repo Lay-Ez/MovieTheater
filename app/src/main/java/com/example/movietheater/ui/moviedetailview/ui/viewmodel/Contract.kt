@@ -1,15 +1,21 @@
 package com.example.movietheater.ui.moviedetailview.ui.viewmodel
 
 import com.example.movietheater.base.viewmodel.Event
-import com.example.movietheater.base.viewmodel.Status
 import com.example.movietheater.ui.data.model.UiMovieModel
 
-data class MovieDetailViewState(
-    val status: Status,
-    val movie: UiMovieModel?,
-    val error: Throwable?,
-    val playState: PlayState
-)
+sealed class MovieDetailViewState {
+
+    data class Content(
+        val movie: UiMovieModel,
+        val playState: PlayState
+    ) : MovieDetailViewState()
+
+    data class Error(
+        val error: Throwable
+    ) : MovieDetailViewState()
+
+    object Loading : MovieDetailViewState()
+}
 
 data class PlayState(
     val videoUri: String,
