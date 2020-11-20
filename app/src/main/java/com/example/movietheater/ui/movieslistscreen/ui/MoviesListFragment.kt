@@ -10,7 +10,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.movietheater.R
 import com.example.movietheater.base.ListItem
-import com.example.movietheater.base.viewmodel.Status
 import com.example.movietheater.ui.data.model.UiMovieModel
 import com.example.movietheater.ui.movieslistscreen.ui.viewmodel.MoviesListViewModel
 import com.example.movietheater.ui.movieslistscreen.ui.viewmodel.MoviesViewState
@@ -38,27 +37,25 @@ class MoviesListFragment : Fragment(R.layout.fragment_movies_list) {
         viewModel.viewState.observe(viewLifecycleOwner, Observer {
             displayState(it)
         })
-        if (!isContentAvailable()) {
-            viewModel.processUiEvent(UiEvent.LoadMovies)
-        }
+        viewModel.processUiEvent(UiEvent.LoadMovies)
         swipeRefreshLayout.setOnRefreshListener {
-            viewModel.processUiEvent(UiEvent.LoadMovies)
+            viewModel.processUiEvent(UiEvent.ForceLoadMovies)
         }
     }
 
-    private fun displayState(it: MoviesViewState) {
-        when (it.status) {
-            Status.CONTENT -> {
-                adapter.items = it.movieList
+    private fun displayState(viewState: MoviesViewState) {
+        when (viewState) {
+            is MoviesViewState.Content -> {
+                adapter.items = viewState.movieList
                 adapter.notifyDataSetChanged()
                 swipeRefreshLayout.isRefreshing = false
             }
-            Status.PROCESSING -> {
+            is MoviesViewState.Loading -> {
                 swipeRefreshLayout.isRefreshing = true
             }
-            Status.ERROR -> {
+            is MoviesViewState.Error -> {
                 swipeRefreshLayout.isRefreshing = false
-                it.error?.let { displayError(it) }
+                displayError(viewState.error)
             }
         }
     }
@@ -81,11 +78,6 @@ class MoviesListFragment : Fragment(R.layout.fragment_movies_list) {
             startPostponedEnterTransition()
             true
         }
-    }
-
-    private fun isContentAvailable(): Boolean {
-        val status = viewModel.viewState.value?.status
-        return status != null && status == Status.CONTENT
     }
 
     private fun openDetailedViewForMovie(movie: UiMovieModel, imageView: ImageView) {
