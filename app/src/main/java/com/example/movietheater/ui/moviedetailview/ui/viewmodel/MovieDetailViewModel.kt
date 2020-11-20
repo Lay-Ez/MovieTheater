@@ -3,7 +3,6 @@ package com.example.movietheater.ui.moviedetailview.ui.viewmodel
 import androidx.lifecycle.viewModelScope
 import com.example.movietheater.base.viewmodel.BaseViewModel
 import com.example.movietheater.base.viewmodel.Event
-import com.example.movietheater.base.viewmodel.Status
 import com.example.movietheater.data.remote.MoviesRepo
 import com.example.movietheater.ui.data.PlayPositionsRepo
 import com.example.movietheater.ui.data.model.UiMovieModel
@@ -14,19 +13,10 @@ import java.io.IOException
 class MovieDetailViewModel(
     private val moviesRepo: MoviesRepo,
     private val playPositionsRepo: PlayPositionsRepo
-) :
-    BaseViewModel<MovieDetailViewState>() {
+) : BaseViewModel<MovieDetailViewState>() {
 
     override fun initialViewState(): MovieDetailViewState =
-        MovieDetailViewState(
-            status = Status.PROCESSING,
-            movie = null,
-            error = null,
-            playState = PlayState(
-                videoUri = "",
-                savedPlayPosition = 0
-            )
-        )
+        MovieDetailViewState.Loading
 
     override fun reduce(event: Event, previousState: MovieDetailViewState): MovieDetailViewState? {
         when (event) {
@@ -34,14 +24,19 @@ class MovieDetailViewModel(
             is UiEvent.OnSavePlayPosition -> savePlayPosition(event.playPosition)
             is DataEvent.OnMovieLoaded -> return onMovieLoaded(event.movie)
             is DataEvent.OnError -> return onError(event.error)
-            is DataEvent.OnLoadStarted -> onLoad()
+            is DataEvent.OnLoadStarted -> return onLoad()
         }
         return null
     }
 
     private fun onLoadMovie(movieId: Int) {
-        val isRequestedMovieCashed = viewState.value?.movie?.id == movieId
-        if (!isRequestedMovieCashed) {
+        val currentViewState = viewState.value
+        if (currentViewState is MovieDetailViewState.Content) {
+            val isRequestedMovieCashed = currentViewState.movie.id == movieId
+            if (!isRequestedMovieCashed) {
+                loadMovie(movieId)
+            }
+        } else {
             loadMovie(movieId)
         }
     }
@@ -61,19 +56,17 @@ class MovieDetailViewModel(
     }
 
     private fun savePlayPosition(playPosition: Long) {
-        val currentPlayState = viewState.value?.playState
-        currentPlayState?.let {
-            playPositionsRepo.savePlayPosition(it.videoUri, playPosition)
+        val currentViewState = viewState.value
+        if (currentViewState is MovieDetailViewState.Content) {
+            playPositionsRepo.savePlayPosition(currentViewState.movie.videoUri, playPosition)
         }
     }
 
     private fun onMovieLoaded(
         movie: UiMovieModel
     ): MovieDetailViewState {
-        return MovieDetailViewState(
-            status = Status.CONTENT,
+        return MovieDetailViewState.Content(
             movie = movie,
-            error = null,
             playState = PlayState(
                 videoUri = movie.videoUri,
                 savedPlayPosition = playPositionsRepo.getPlayPosition(movie.videoUri)
@@ -84,26 +77,12 @@ class MovieDetailViewModel(
     private fun onError(
         error: Throwable
     ): MovieDetailViewState {
-        return MovieDetailViewState(
-            status = Status.ERROR,
-            movie = null,
-            error = error,
-            playState = PlayState(
-                videoUri = "",
-                savedPlayPosition = 0
-            )
+        return MovieDetailViewState.Error(
+            error = error
         )
     }
 
     private fun onLoad(): MovieDetailViewState {
-        return MovieDetailViewState(
-            status = Status.PROCESSING,
-            movie = null,
-            error = null,
-            playState = PlayState(
-                videoUri = "",
-                savedPlayPosition = 0
-            )
-        )
+        return MovieDetailViewState.Loading
     }
 }

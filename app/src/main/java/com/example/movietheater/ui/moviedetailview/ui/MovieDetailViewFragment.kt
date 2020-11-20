@@ -13,10 +13,10 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.movietheater.R
 import com.example.movietheater.base.extensions.retrieveYear
-import com.example.movietheater.base.viewmodel.Status
 import com.example.movietheater.ui.data.model.UiMovieModel
 import com.example.movietheater.ui.moviedetailview.di.ExoPlayerProvider
 import com.example.movietheater.ui.moviedetailview.ui.viewmodel.MovieDetailViewModel
+import com.example.movietheater.ui.moviedetailview.ui.viewmodel.MovieDetailViewState
 import com.example.movietheater.ui.moviedetailview.ui.viewmodel.PlayState
 import com.example.movietheater.ui.moviedetailview.ui.viewmodel.UiEvent
 import com.example.movietheater.ui.utils.formatGenres
@@ -75,17 +75,17 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
         super.onStart()
         initializePlayer()
         viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
-            when (viewState.status) {
-                Status.CONTENT -> {
+            when (viewState) {
+                is MovieDetailViewState.Content -> {
                     displayLoad(false)
-                    displayMovie(viewState.movie!!)
+                    displayMovie(viewState.movie)
                     processPlayState(viewState.playState)
                 }
-                Status.ERROR -> {
+                is MovieDetailViewState.Error -> {
                     displayLoad(false)
-                    viewState.error?.let { displayError(it) }
+                    displayError(viewState.error)
                 }
-                Status.PROCESSING -> {
+                is MovieDetailViewState.Loading -> {
                     displayLoad(true)
                 }
             }
