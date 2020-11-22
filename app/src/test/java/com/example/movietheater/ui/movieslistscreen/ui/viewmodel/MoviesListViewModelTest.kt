@@ -2,7 +2,6 @@ package com.example.movietheater.ui.movieslistscreen.ui.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.example.movietheater.base.viewmodel.Status
 import com.example.movietheater.data.remote.MoviesRepo
 import com.example.movietheater.ui.CoroutineRule
 import com.example.movietheater.ui.captureViewState
@@ -12,6 +11,7 @@ import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -50,8 +50,11 @@ class MoviesListViewModelTest {
         }
         viewModel.processUiEvent(UiEvent.LoadMovies)
         val viewState = captureViewState(viewStateObserver)
-        assertEquals(Status.CONTENT, viewState.status)
-        assertEquals(remoteMovieModel.mapToUi(), viewState.movieList[0])
+        assertTrue(viewState is MoviesViewState.Content)
+        assertEquals(
+            remoteMovieModel.mapToUi(),
+            (viewState as MoviesViewState.Content).movieList[0]
+        )
     }
 
     @Test
@@ -61,6 +64,7 @@ class MoviesListViewModelTest {
         }
         viewModel.processUiEvent(UiEvent.LoadMovies)
         val viewState = captureViewState(viewStateObserver)
-        assertEquals(Status.ERROR, viewState.status)
+        assertTrue(viewState is MoviesViewState.Error)
+        assertTrue((viewState as MoviesViewState.Error).error is IOException)
     }
 }
