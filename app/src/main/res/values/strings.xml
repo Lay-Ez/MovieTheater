@@ -8,5 +8,6 @@
 
     <string name="movie_detail_toolbar_title">Details</string>
     <string name="rating_label">Rating:</string>
+    <string name="vote_count_label">votes</string>
     <string name="time_divider">/</string>
 </resources>

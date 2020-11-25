@@ -104,10 +104,10 @@
                 android:id="@+id/scoreTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                app:layout_constraintBottom_toBottomOf="@+id/ratingBar"
-                app:layout_constraintStart_toEndOf="@+id/ratingBar"
+                app:layout_constraintStart_toStartOf="@+id/ratingLabelTextView"
+                app:layout_constraintTop_toBottomOf="@+id/ratingLabelTextView"
                 tools:text="8.5" />
 
             <TextView
@@ -115,8 +115,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                app:layout_constraintBaseline_toBaselineOf="@+id/scoreTextView"
-                app:layout_constraintStart_toEndOf="@+id/scoreTextView"
+                app:layout_constraintBottom_toBottomOf="@+id/ratingBar"
+                app:layout_constraintStart_toEndOf="@+id/ratingBar"
+                app:layout_constraintTop_toTopOf="@+id/ratingBar"
                 tools:text="856" />
 
             <RatingBar
@@ -124,11 +125,13 @@
                 style="@android:style/Widget.DeviceDefault.RatingBar.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
                 android:max="10"
                 android:numStars="10"
-                app:layout_constraintStart_toStartOf="@+id/ratingLabelTextView"
-                app:layout_constraintTop_toBottomOf="@+id/ratingLabelTextView" />
+                app:layout_constraintBottom_toBottomOf="@+id/scoreTextView"
+                app:layout_constraintStart_toEndOf="@+id/scoreTextView"
+                app:layout_constraintTop_toTopOf="@+id/scoreTextView"
+                app:layout_constraintVertical_bias="0.75" />
 
             <View
                 android:id="@+id/divider"
@@ -192,6 +195,15 @@
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 app:layout_constraintStart_toStartOf="@+id/divider3"
                 app:layout_constraintTop_toBottomOf="@+id/divider3" />
+
+            <TextView
+                android:id="@+id/voteCountLabelTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="@string/vote_count_label"
+                app:layout_constraintBaseline_toBaselineOf="@+id/voteCountTextView"
+                app:layout_constraintStart_toEndOf="@+id/voteCountTextView" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

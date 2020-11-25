@@ -42,8 +42,19 @@ class MovieDetailViewFragment : Fragment(R.layout.fragment_movie_detail_view) {
 
     private val contentViews by lazy {
         listOf(
-            titleTextView, yearTextView, genreTextView, scoreTextView, voteCountTextView, ratingBar,
-            divider, descriptionTextView, divider2, playerView, ratingLabelTextView, divider3
+            titleTextView,
+            yearTextView,
+            genreTextView,
+            scoreTextView,
+            voteCountTextView,
+            ratingBar,
+            divider,
+            descriptionTextView,
+            divider2,
+            playerView,
+            ratingLabelTextView,
+            divider3,
+            voteCountLabelTextView
         )
     }
 
